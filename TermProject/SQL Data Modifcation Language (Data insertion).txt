@@ -1,0 +1,388 @@
+--We have to get shit done boys
+--Leeroy Jenkins it up
+
+insert into vehicles (vehicleID, customerID, mileage, make, model) values
+    (1, 1, 1000, 'Toyota', 'Camry'),        --Steady/Corporate
+    (2, 1, 100001, 'Toyota', 'Corolla'),    
+    (3, 2, 9892, 'Toyota', 'Wish'),         --Steady/Private
+    (4, 2, 28382, 'Toyota', 'Yaris'),
+    (5, 3, 32833, 'Honda', 'CR-V'),         --Premier/Corporate
+    (6, 4, 25433, 'Ford','Focus'),           --Premier/Private
+    (7, 5, 8383, 'Hyundai','Tucson'),       --Steady/Corporate
+    (8, 5, 9531, 'Infiniti','Q30'),
+    (9, 5, 7384, 'Kia','Soul'),
+    (10, 6, 18280, 'Mazda','Mazda2'),        --Premier/Corporate
+    (11, 7, 12322, 'Volkswagen','Beetle'),   --Prospective/Private
+    (12, 8, 50542, 'Volkswagen','Jetta');    --Prospective/Corporate
+    
+--mileageEstimate is an estimate number of miles they will drive,
+--not the estimate mileage on the car when they bring it in.
+insert into steadyCustomerVehicles (vehicleID, steadyID, mileageEstimate) values
+    (1, 1, 3000),       
+    (2, 1, 2000),
+    (3, 2, 5000),
+    (4, 2, 200),
+    (7, 5, 500),
+    (8, 5, 600),
+    (9, 5, 700);
+
+--For premier customers    
+insert into mileagePredictions (mileagePredictionID, vehicleID, mileagePrediction, mileageActual, "year") values
+    (1, 5, 10000, 9700, 2016),
+    (2, 5, 9700, null, 2017),
+    (3, 6, 15000, 20000, 2016),
+    (4, 6, 20000, null, 2017),
+    (5, 10, 30000, 10000, 2016),
+    (6, 10, 10000, null, 2017);
+    
+insert into premierCustomerVehicles (vehicleID, premierID, servicableVehicleFlag) values
+    (5, 3, true),
+    (6, 4, true),
+    (10, 6, true);
+
+insert into mechanics (mechanicID, name, DOB) values
+    (100, 'Mac', '1980-01-12'),
+    (101, 'Jess', '1985-03-23'),
+    (102, 'Bill', '2000-10-11'),
+    (103, 'Mike', '1995-10-11'),
+    (104, 'Kelly', '1991-05-15');
+    
+insert into skills (skillName) values
+    ('Change Oil'),
+    ('Change Battery'),
+    ('Remove Engine'),
+    ('Replace Brake Pads'),
+    ('Tune Engine'),
+    ('Replace Tires'),
+    ('Rotate Tires'),
+    ('Replace Hoses'),
+    ('Replace Transmission Fluid'),
+    ('Fix Power Steering'),
+    ('Change Air Filter'),
+    ('Replace Windshield Wipers'),
+    ('Add Muffler'),
+    ('Add Tint'),
+    ('Add Decal'),
+    ('Add Sound System');
+    
+insert into seniorMechanics (mechanicID, salaryBonus) values
+    (101, 4250),
+    (103, 5000);
+    
+insert into skillsList (mechanicID, skillName) values
+    (100, 'Change Oil'),                    --Mac
+    (100, 'Replace Hoses'),
+    (100, 'Change Air Filter'),
+    (101, 'Change Oil'),                    --Jess
+    (101, 'Change Battery'),
+    (101, 'Remove Engine'),
+    (101, 'Replace Brake Pads'),
+    (101, 'Tune Engine'),
+    (101, 'Replace Tires'),
+    (101, 'Rotate Tires'),
+    (101, 'Replace Hoses'),
+    (101, 'Replace Transmission Fluid'),
+    (101, 'Fix Power Steering'),
+    (102, 'Add Tint'),                      --Bill
+    (102, 'Add Decal'),
+    (103, 'Add Sound System'),              --Mike
+    (103, 'Add Decal'),
+    (103, 'Add Tint'),
+    (103, 'Add Muffler'),
+    (103, 'Replace Windshield Wipers'),
+    (103, 'Change Air Filter'),
+    (103, 'Fix Power Steering'),
+    (103, 'Replace Transmission Fluid'),
+    (103, 'Replace Hoses'),
+    (103, 'Rotate Tires'),
+    (103, 'Replace Tires'),
+    (103, 'Tune Engine'),
+    (103, 'Replace Brake Pads'),
+    (103, 'Remove Engine'),
+    (103, 'Change Battery'),
+    (103, 'Change Oil'),
+    (104, 'Replace Tires'),                 --Kelly
+    (104, 'Rotate Tires'),
+    (104, 'Replace Brake Pads'),
+    (104, 'Remove Engine'),
+    (104, 'Tune Engine');
+
+insert into mentorships (mechanicID, mentorID, skillName, startDate, endDate) values
+    (102, 103, 'Add Tint', '2015-05-05', '2015-06-05'),
+    (100, 101, 'Replace Hoses', '2017-03-06', '2017-03-10'),
+    (100, 101, 'Replace Hoses', '2017-03-15', '2017-03-19'),
+    (104, 101, 'Replace Brake Pads', '2016-02-24', '2016-02-28'),
+    (104, 101, 'Change Battery', '2017-05-05', null),
+    (102, 103, 'Add Decal', '2015-06-06', '2015-07-01');
+
+insert into serviceTechnicians (serviceTechID, name, DOB, licenseNumber) values
+    (100, 'Mac', '1980-01-12', 2316543),
+    (201, 'May', '1993-12-17', 7242847),
+    (202, 'Jack', '1994-07-14', 6634331),
+    (203, 'Scott', '1990-10-10', 2811215);
+
+insert into invoices (invoiceID, vehicleID, serviceTechID, cDate) values
+    (1, 1, 100, '2016-04-04'),
+    (2, 2, 100, '2016-04-05'),
+    (3, 3, 201, '2016-04-06'),
+    (4, 4, 201, '2016-04-07'),
+    (5, 5, 201, '2016-04-08'),
+    (6, 6, 202, '2016-04-09'),
+    (7, 7, 202, '2016-04-10'),
+    (8, 8, 202, '2016-04-11'),
+    (9, 9, 203, '2016-04-12'),
+    (10, 10, 203, '2016-04-13');
+    
+--itemName connection to skills table?
+insert into invoiceItems (invoiceID, itemName, skillName, mechanicID) values
+    (1, 'Change Oil', 'Change Oil', 103),
+    (1, 'Change Battery', 'Change Battery', 103),
+    (1, 'Rotate Tires', 'Rotate Tires', 103),
+    (2, 'Change Oil', 'Change Oil', 103),
+    (2, 'Change Air Filter', 'Change Air Filter', 103),
+    (2, 'Add Muffler', 'Add Muffler', 103),
+    (3, 'Change Oil', 'Change Oil', 103),
+    (3, 'Replace Windshield Wipers', 'Replace Windshield Wipers', 103),
+    (3, 'Replace Hoses', 'Replace Hoses', 103),
+    (4, 'Change Oil', 'Change Oil', 103),
+    (4, 'Add Sound System', 'Add Sound System', 103),
+    (4, 'Fix Power Steering', 'Fix Power Steering', 103),
+    (5, 'Tune Engine', 'Tune Engine', 103),
+    (5, 'Replace Hoses', 'Replace Hoses', 103),
+    (5, 'Change Oil', 'Change Oil', 103),
+    (6, 'Replace Windshield Wipers', 'Replace Windshield Wipers', 103),
+    (6, 'Replace Tires', 'Replace Tires', 103),
+    (6, 'Remove Engine', 'Remove Engine', 103),
+    (7, 'Change Oil', 'Change Oil', 103),
+    (7, 'Replace Tires', 'Replace Tires', 103),
+    (7, 'Change Air Filter', 'Change Air Filter', 103),
+    (8, 'Tune Engine', 'Tune Engine', 103),
+    (8, 'Replace Hoses', 'Replace Hoses', 103),
+    (8, 'Change Oil', 'Change Oil', 103),
+    (9, 'Change Oil', 'Change Oil', 103),
+    (9, 'Change Air Filter', 'Change Air Filter', 103),
+    (9, 'Change Battery', 'Change Battery', 103),
+    (10, 'Change Oil', 'Change Oil', 103),
+    (10, 'Replace Hoses', 'Replace Hoses', 103),
+    (10, 'Tune Engine', 'Tune Engine', 103);
+
+insert into maintenancePackages (packageID, vehicleID, targetMileage) values
+    (1,1,5000),
+    (2,2,5000),
+    (3,3,2000),
+    (4,4,5000),
+    (5,5,4000),
+    (6,6,1000),
+    (7,7,10000),
+    (8,8,2000),
+    (9,9,5000),
+    (10,10,2000);
+
+insert into maintenanceItems (packageID, itemName, skillName, cost, price) values
+    (1, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (1, 'Change Battery', 'Change Battery', 48.50, 66.45),
+    (1, 'Rotate Tires', 'Rotate Tires', 5.40, 13.23),
+    (2, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (2, 'Change Air Filter', 'Change Air Filter', 12.76, 15.22),
+    (2, 'Add Muffler', 'Add Muffler', 40.40, 62.22),
+    (3, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (3, 'Replace Windshield Wipers', 'Replace Windshield Wipers', 19.99, 30.21),
+    (3, 'Replace Hoses', 'Replace Hoses', 24.10, 34.34),
+    (4, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (4, 'Add Sound System', 'Add Sound System', 138.98, 160.33),
+    (4, 'Fix Power Steering', 'Fix Power Steering', 123.21, 150.00),
+    (5, 'Tune Engine', 'Tune Engine', 38.73, 72.23),
+    (5, 'Replace Hoses', 'Replace Hoses', 24.10, 34.34),
+    (5, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (6, 'Replace Windshield Wipers', 'Replace Windshield Wipers', 19.99, 23.33),
+    (6, 'Replace Tires', 'Replace Tires', 154.23, 183.23),
+    (6, 'Remove Engine', 'Remove Engine', 24.34, 43.58),
+    (7, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (7, 'Replace Tires', 'Replace Tires', 154.23, 183.33),
+    (7, 'Change Air Filter', 'Change Air Filter', 12.76, 15.44),
+    (8, 'Tune Engine', 'Tune Engine', 38.73, 54.34),
+    (8, 'Replace Hoses', 'Replace Hoses', 24.10, 34.23),
+    (8, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (9, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (9, 'Change Air Filter', 'Change Air Filter', 12.76, 15.43),
+    (9, 'Change Battery', 'Change Battery', 48.50, 66.66),
+    (10, 'Change Oil', 'Change Oil', 8.99, 30.00),
+    (10, 'Replace Hoses', 'Replace Hoses', 24.10, 34.43),
+    (10, 'Tune Engine', 'Tune Engine', 38.73, 65.45);
+    
+insert into emails (emailID, sendAddress, receiveAddress, sendDate, sendTime, subject) values
+    (1, 'dave@autoshop.com', 'frankthetank@csulb.edu', '2016-02-03', '12:30', 'This is your first contact'), --Steady 1
+    (2,'frankthetank@csulb.edu', 'dave@autoshop.com', '2016-02-04', '12:30', 'Reply back'),
+    (3, 'dave@autoshop.com', 'frankthetank@csulb.edu', '2016-02-05', '12:30', 'Actual Date'),
+    (4, 'dave@autoshop.com', 'frankthetank@csulb.edu', '2016-02-06', '12:30', 'This is your first contact'), --Steady 2
+    (5, 'frankthetank@csulb.edu', 'dave@autoshop.com', '2016-02-07', '12:30', 'Reply back'),
+    (6, 'dave@autoshop.com', 'frankthetank@csulb.edu', '2016-02-08', '12:30', 'Actual Date'),
+    (7, 'dave@autoshop.com', 'databasewhisperer@csulb.edu', '2016-02-09', '12:30', 'This is your first contact'), --Steady 3
+    (8,'databasewhisperer@csulb.edu', 'dave@autoshop.com', '2016-02-10', '12:30', 'Reply back'),
+    (9, 'dave@autoshop.com', 'databasewhisperer@csulb.edu', '2016-02-11', '12:30', 'Actual Date'),
+    (10, 'dave@autoshop.com', 'databasewhisperer@csulb.edu', '2016-02-12', '12:30', 'This is your first contact'),--Steady 4
+    (11,'databasewhisperer@csulb.edu', 'dave@autoshop.com', '2016-02-13', '12:30', 'Reply back'),
+    (12, 'dave@autoshop.com', 'databasewhisperer@csulb.edu', '2016-02-14', '12:30', 'Actual Date'),
+    (13, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-15', '12:30', 'This is your first contact'),   --Steady 5
+    (14, 'max@csulb.edu', 'dave@autoshop.com', '2016-02-16', '12:30', 'Reply back'),
+    (15, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-17', '12:30', 'Actual Date'),
+    (16, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-18', '12:30', 'This is your first contact'),   --Steady 6
+    (17, 'max@csulb.edu', 'dave@autoshop.com', '2016-02-19', '12:30', 'Reply back'),
+    (18, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-20', '12:30', 'Actual Date'),
+    (19, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-21', '12:30', 'This is your first contact'),   --Steady 7
+    (20, 'max@csulb.edu', 'dave@autoshop.com', '2016-02-22', '12:30', 'Reply back'),
+    (21, 'dave@autoshop.com', 'max@csulb.edu', '2016-02-23', '12:30', 'Actual Date'),
+    (22, 'dave@autoshop.com', 'grande@csulb.edu', '2016-02-24', '12:30', 'Special Deal'), --Prospective 1
+    (23, 'dave@autoshop.com', 'beatleslover@csulb.edu', '2016-02-25', '12:30', 'Special Deal'), --Prospective 2
+    (24, 'dave@autoshop.com', 'beatleslover@csulb.edu', '2016-02-26', '12:30', 'Special Deal'); --Prospective 3
+    (24, 'dave@autoshop.com', 'beatleslover@csulb.edu', '2016-02-26', '12:30', 'Special Deal');
+    
+insert into steadyCustomerEmails (emailID, steadyID, vehicleID) values
+    (1, 1, 1),
+    (2, 1, 1),
+    (3, 1, 1),
+    (4, 1, 2),
+    (5, 1, 2),
+    (6, 1, 2),
+    (7, 2, 3),
+    (8, 2, 3),
+    (9, 2, 3),
+    (10, 2, 4),
+    (11, 2, 4),
+    (12, 2, 4),
+    (13, 5, 7),
+    (14, 5, 7),
+    (15, 5, 7),
+    (16, 5, 8),
+    (17, 5, 8),
+    (18, 5, 8),
+    (19, 5, 9),
+    (20, 5, 9),
+    (21, 5, 9);
+
+insert into notificationEmails (emailID, steadyID, vehicleID, targetMileage) values
+    (1, 1, 1, 5000),
+    (4, 1, 2, 5000),
+    (7, 2, 3, 2000),
+    (10, 2, 4, 5000),
+    (13, 5, 7, 10000),
+    (16, 5, 8, 2000),
+    (19, 5, 9, 5000);
+    
+insert into replyEmails (emailID, steadyID, vehicleID, startDate, endDate) values
+    (2, 1, 1, '2016-03-04', '2016-04-04'),
+    (5, 1, 2, '2016-03-05', '2016-04-05'),
+    (8, 2, 3, '2016-03-06', '2016-04-06'),
+    (11, 2, 4, '2016-03-07', '2016-04-07'),
+    (14, 5, 7, '2016-03-08', '2016-04-08'),
+    (17, 5, 8, '2016-03-09', '2016-04-09'),
+    (20, 5, 9, '2016-03-10', '2016-04-10');
+    
+insert into confirmationEmails (emailID, steadyID, vehicleID, appointmentDate, appointmentTime) values
+    (3, 1, 1, '2016-03-04', '1:00'),
+    (6, 1, 2, '2016-03-05', '2:00'),
+    (9, 2, 3, '2016-03-06', '11:00'),
+    (12, 2, 4, '2016-03-07', '8:00'),
+    (15, 5, 7, '2016-03-08', '4:00'),
+    (18, 5, 8, '2016-03-09', '2:00'),
+    (21, 5, 9, '2016-03-10', '1:00');
+    
+insert into prospectiveCustomerEmails (emailID, prospectiveID, specialDealName) values
+    (22, 7, 'Hooplah Sale!'),
+    (23, 8, 'Hooplah Sale!'),
+    (24, 8, 'Jump for Money!');
+
+insert into pets (customerID, petID, petName, petDOB, petSpecies) values
+    (2, 666, 'Snuggles', '2013-02-01', 'Dog'),
+    (2, 667, 'Squanchy', '2013-02-02', 'Cat'),
+    (2, 668, 'Sasquach', '2013-02-03', 'Sasquach'),
+    (2, 669, 'Sam', '2013-02-04', 'Human');
+
+insert into customers (customerID, name, DOB, emailAddress, loyaltyPoints, yearsLoyal) values
+    (1, 'Francisco', '1940-12-25', 'frankthetank@csulb.edu', 30, 2),    --Steady/Corp.
+    (2, 'Ruben', '1984-03-02', 'databasewhisperer@csulb.edu', 40, 3),   --Steady/Private
+    (3, 'Jesus', '2000-06-12', 'Jesusblesshisname@csulb.edu', 80, 5),   --Premier/Corp.
+    (4, 'Scooter', '1990-01-01', 'scootermcgrooger@csulb.edu', 80, 5),  --Premier/Private
+    (5, 'Max', '1960-11-21', 'max@csulb.edu', 160, 10),                 --Steady/Corp.
+    (6, 'Christian', '1994-12-25', 'sk8erpnk@csulb.edu', 50, 4),        --Premier/Corp.
+    (7, 'Rio', '1999-07-12', 'grande@csulb.edu', null, null),           --Prospective/Private
+    (8, 'Jude', '1995-11-10', 'beatleslover@csulb.edu', null, null);    --Prospective/Corp.
+    
+insert into zipLocations (zipCode, city, state) values
+    (90630, 'Cypress', 'CA'),
+    (90840, 'Long Beach', 'CA'),
+    (90715, 'Long Beach', 'CA'),
+    (90812, 'Long Beach', 'CA'),
+    (90848, 'Long Beach', 'CA'),
+    (90720, 'Los Alamitos', 'CA'),
+    (90724, 'Los Alamitos', 'CA'),
+    (92625, 'Newport Beach', 'CA');
+   
+insert into corporateAddresses (corporateID, addressType, address, zipCode) values
+    (1, 'Home', '31231 Yada Yada', 90840),    --Steady/Corp.
+    (3, 'Home', '32943 Blah Blah', 92625),   --Premier/Corp.
+    (5, 'Home', '43445 Go Way', 90720),                 --Steady/Corp.
+    (6, 'Home', '47322 Iterative Stuff', 90630),        --Premier/Corp.
+    (8, 'Home', '85847 My Home', 90840);    --Prospective/Corp.
+
+insert into privateAddresses (privateID, address, zipCode) values
+    (2, '28 Mulhollan Dr.', 90840),   --Steady/Private
+    (4, '11346 Kent Way', 90630),  --Premier/Private
+    (7, 'Rio Grande. River', 90724);           --Prospective/Private
+
+insert into privateCustomers (privateID) values
+    (2),   --Steady/Private
+    (4),   --Premier/Private
+    (7);           --Prospective/Private
+
+insert into corporateCustomers (corporateID) values
+    (1),    --Steady/Corp.
+    (3),   --Premier/Corp.
+    (5),                 --Steady/Corp.
+    (6),        --Premier/Corp.
+    (8);    --Prospective/Corp.
+    
+insert into donuts (corporateID, dateEaten, timeEaten) values
+    (1, '2016-04-04', '12:20'),
+    (3, '2016-04-05', '11:00'),
+    (5, '2016-04-06', '12:20'),
+    (5, '2016-03-07', '8:45'),
+    (5, '2016-03-08', '1:15'),
+    (6, '2016-03-09', '12:20'),
+    (8, '2016-03-10', '8:40');
+
+insert into referrals (referralID, name, DOB, email) values
+    (1, 'Rio', '1999-07-12', 'grande@csulb.edu'),
+    (3, 'Jude', '1995-11-10', 'beatleslover@csulb.edu');
+    
+insert into members (memberID, referralID) values
+    (1, 1),    --Steady/Corp.
+    (2, 1),   --Steady/Private
+    (3, 3),   --Premier/Corp.
+    (4, 3),  --Premier/Private
+    (5, 1),         --Steady/Corp.
+    (6, 1);         --Premier/Corp.
+    
+insert into prospectiveCustomers (prospectiveID, emailCount, deadProspectFlag) values
+    (7, 1, false),          --Prospective/Private
+    (8, 2, false);          --Prospective/Corp.
+    
+insert into premierCustomers (premierID) values
+    (3),         --Premier/Corp.
+    (4),         --Premier/Private
+    (6);         --Premier/Corp.
+
+insert into annualFees (premierID, fee, "year") values
+    (3, 2125.43, 2016),         --Premier/Corp.
+    (4, 2430.50, 2016),         --Premier/Private
+    (6, 1895.25, 2016);
+
+insert into steadyCustomers (steadyID, recentPayment) values
+    (1, 504.99),     --Steady/Corp.
+    (2, 843.23),     --Steady/Private
+    (5, 542.75);     --Steady/Corp.
+    
+    
+    
+    
+    

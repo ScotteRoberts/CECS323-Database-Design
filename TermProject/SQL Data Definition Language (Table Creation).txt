@@ -1,0 +1,320 @@
+--what up brus
+--oi this SQL is gonna be p topkek
+--kthxbai
+
+--what up brus
+--oi this SQL is gonna be p topkek
+--kthxbai
+
+--Vehicles
+CREATE TABLE vehicles (
+    vehicleID   int NOT NULL,
+    customerID  int NOT NULL,
+    mileage     int NOT NULL,
+    make        varchar(50) NOT NULL,
+    model       varchar(50) NOT NULL,
+    CONSTRAINT  vehicles_pk PRIMARY KEY (vehicleID),
+    CONSTRAINT  vehicles_fk1 FOREIGN KEY (customerID) REFERENCES customers(customerID)
+);
+    
+CREATE TABLE steadyCustomerVehicles (
+    vehicleID       int NOT NULL,
+    steadyID        int NOT NULL,
+	mileageEstimate int NOT NULL,
+	CONSTRAINT	steadyCustomerVehicles_pk PRIMARY KEY (vehicleID),
+	CONSTRAINT	steadyCustomerVehicles_fk1 FOREIGN KEY (vehicleID) REFERENCES vehicles (vehicleID),
+	CONSTRAINT 	steadyCustomerVehicles_fk2 FOREIGN KEY (steadyID) REFERENCES steadyCustomers (steadyID)
+);
+    
+CREATE TABLE mileagePredictions(
+    mileagePredictionID int NOT NULL,
+    vehicleID           int NOT NULL,
+    mileagePrediction   int NOT NULL,
+    mileageActual       int,
+    "year"                int NOT NULL,
+    CONSTRAINT mileagePredictions_pk PRIMARY KEY (mileagePredictionID),
+    CONSTRAINT mileagePredictions_fk FOREIGN KEY (vehicleID) REFERENCES premierCustomerVehicles (vehicleID)
+);
+    
+CREATE TABLE premierCustomerVehicles (
+    vehicleID               int NOT NULL,
+    premierID               int NOT NULL,
+    servicableVehicleFlag   boolean,
+    CONSTRAINT premierCustomerVehicles_pk PRIMARY KEY (vehicleID),
+    CONSTRAINT premierCustomerVehicles_fk1 FOREIGN KEY (vehicleID) REFERENCES vehicles(vehicleID),
+    CONSTRAINT premierCustomerVehicles_fk2 FOREIGN KEY (premierID) REFERENCES premierCustomers(premierID)
+);
+    
+--Mechanics   
+CREATE TABLE mechanics (
+    mechanicID  int NOT NULL,
+    name        varchar(50) NOT NULL,
+    DOB         date NOT NULL,
+    CONSTRAINT mechanics_pk PRIMARY KEY (mechanicID)
+); 
+
+CREATE TABLE skills(
+    skillName   varchar(50) NOT NULL,
+    CONSTRAINT skills_pk PRIMARY KEY (skillName)
+);
+
+CREATE TABLE seniorMechanics (
+    mechanicID   int NOT NULL,
+    salaryBonus  int NOT NULL,
+    CONSTRAINT seniorMechanics_pk PRIMARY KEY (mechanicID),
+    CONSTRAINT seniorMechanics_fk FOREIGN KEY (mechanicID) REFERENCES mechanics(mechanicID)
+);
+
+CREATE TABLE skillsList(
+    mechanicID   int NOT NULL,
+    skillName    varchar(50) NOT NULL,
+    CONSTRAINT skillsList_pk PRIMARY KEY (mechanicID, skillName),
+    CONSTRAINT skillsList_fk1 FOREIGN KEY (mechanicID) REFERENCES mechanics(mechanicID),
+    CONSTRAINT skillsList_fk2 FOREIGN KEY (skillName) REFERENCES skills(skillName)
+);
+
+CREATE TABLE mentorships (
+    mechanicID   int NOT NULL,
+    mentorID     int NOT NULL,
+    skillName    VARCHAR(50) NOT NULL,
+    startDate    date NOT NULL, 
+    endDate      date,
+    CONSTRAINT mentorships_pk PRIMARY KEY (mechanicID, mentorID, skillName, startDate),
+    CONSTRAINT mentorships_fk1 FOREIGN KEY (mechanicID) REFERENCES mechanics(mechanicID),
+    CONSTRAINT mentorships_fk2 FOREIGN KEY (mentorID) REFERENCES mechanics(mechanicID),
+    CONSTRAINT mentorships_fk3 FOREIGN KEY (skillName) REFERENCES skills(skillName)
+);
+
+--Maintance
+CREATE TABLE serviceTechnicians (
+    serviceTechID int NOT NULL,
+    name          varchar(50),
+    DOB           DATE,
+    licenseNumber int,
+    CONSTRAINT serviceTechnicians_pk PRIMARY KEY (serviceTechID)
+);
+
+--Check totalCost and see if it applies?
+CREATE TABLE invoices (
+    invoiceID     int NOT NULL,
+    vehicleID     int NOT NULL,
+    serviceTechID int NOT NULL,
+    cDate         date NOT NULL,    --date of purchase
+    CONSTRAINT invoices_pk PRIMARY KEY (invoiceID),
+    CONSTRAINT invoices_fk1 FOREIGN KEY (vehicleID) REFERENCES vehicles(vehicleID),
+    CONSTRAINT invoices_fk2 FOREIGN KEY (serviceTechID) REFERENCES serviceTechnicians(serviceTechID)
+);
+
+CREATE TABLE invoiceItems (
+    invoiceID     int NOT NULL,
+    itemName      varchar(50)  NOT NULL,
+    skillName     varchar(50)  NOT NULL,
+    mechanicID    int  NOT NULL,
+    CONSTRAINT invoiceItems_pk PRIMARY KEY (invoiceID, itemName, skillName, mechanicID),
+    CONSTRAINT invoiceItems_fk1 FOREIGN KEY (invoiceID) REFERENCES invoices(invoiceID),
+    CONSTRAINT invoiceItems_fk2 FOREIGN KEY (itemName, skillName) REFERENCES maintenanceItems(itemName, skillName),
+    CONSTRAINT invoiceItems_fk3 FOREIGN KEY (mechanicID) REFERENCES mechanics(mechanicID)
+);
+ 
+CREATE TABLE maintenancePackages (
+    packageID     int NOT NULL,
+    vehicleID     int NOT NULL,
+    targetMileage int NOT NULL,
+    CONSTRAINT maintenancePackages_pk PRIMARY KEY (packageID),
+    CONSTRAINT maintenancePackages_fk FOREIGN KEY (vehicleID) REFERENCES vehicles(vehicleID)
+);
+
+CREATE TABLE maintenanceItems (
+    packageID       int NOT NULL,
+    itemName        varchar(50) NOT NULL,
+    skillName       varchar(50) NOT NULL,
+    cost            float NOT NULL,
+    price           float NOT NULL,
+    CONSTRAINT maintenanceItems_pk PRIMARY KEY (itemName, skillName),
+    CONSTRAINT maintenanceItems_fk1 FOREIGN KEY (packageID) REFERENCES maintenancePackages(packageID),
+    CONSTRAINT maintenanceItems_fk2 FOREIGN KEY (skillName) REFERENCES skills(skillName)
+);
+
+--Email
+CREATE TABLE emails (
+    emailID         int NOT NULL,
+    sendAddress     varchar(50) NOT NULL,
+    receiveAddress  varchar(50) NOT NULL, 
+    sendDate        date NOT NULL,
+    sendTime        varchar(50) NOT NULL,
+    subject         varchar(50), 
+    CONSTRAINT emails_pk PRIMARY KEY (emailID)
+    
+);
+
+CREATE TABLE steadyCustomerEmails(
+    emailID        int NOT NULL,
+    steadyID       int NOT NULL,
+    vehicleID      int NOT NULL, 
+    CONSTRAINT steadyCustomerEmails_pk PRIMARY KEY (emailID, steadyID, vehicleID),
+    CONSTRAINT steadyCustomerEmails_fk1 FOREIGN KEY (emailID) REFERENCES emails(emailID),
+    CONSTRAINT steadyCustomerEmails_fk2 FOREIGN KEY (steadyID) REFERENCES steadyCustomers(steadyID),
+    CONSTRAINT steadyCustomerEmails_fk3 FOREIGN KEY (vehicleID) REFERENCES vehicles(vehicleID)
+);
+
+CREATE TABLE notificationEmails(
+    emailID         int NOT NULL,
+    steadyID        int NOT NULL,
+    vehicleID       int NOT NULL,
+    targetMileage   int NOT NULL,
+    CONSTRAINT notificationEmails_pk PRIMARY KEY (emailID, steadyID, vehicleID),
+    CONSTRAINT notificationEmails_fk FOREIGN KEY (emailID, steadyID, vehicleID) REFERENCES steadyCustomerEmails (emailID, steadyID, vehicleID)
+);
+
+CREATE TABLE replyEmails(
+    emailID         int NOT NULL,
+    steadyID        int NOT NULL,
+    vehicleID       int NOT NULL, 
+    startDate       date,
+    endDate         date,
+    CONSTRAINT replyEmails_pk PRIMARY KEY (emailID, steadyID, vehicleID),
+    CONSTRAINT replyEmails_fk FOREIGN KEY (emailID, steadyID, vehicleID) REFERENCES steadyCustomerEmails(emailID, steadyID, vehicleID)
+);
+
+CREATE TABLE confirmationEmails(
+    emailID             int NOT NULL,
+    steadyID            int NOT NULL,
+    vehicleID           int NOT NULL,
+    appointmentDate     date,
+    appointmentTime     varchar(50),
+    CONSTRAINT confirmationEmails_pk PRIMARY KEY (emailID, steadyID, vehicleID),
+    CONSTRAINT confirmationEmails_fk FOREIGN KEY (emailID, steadyID, vehicleID) REFERENCES steadyCustomerEmails (emailID, steadyID, vehicleID)
+);
+
+CREATE TABLE prospectiveCustomerEmails(
+    emailID             int NOT NULL,
+    prospectiveID       int NOT NULL,
+    specialDealName     varchar(50),
+    CONSTRAINT prospectiveCustomerEmails_pk PRIMARY KEY (emailID, prospectiveID, specialDealName),
+    CONSTRAINT prospectiveCustomerEmails_fk1 FOREIGN KEY (emailID) REFERENCES emails (emailID),
+    CONSTRAINT prospectiveCustomerEmails_fk2 FOREIGN KEY (prospectiveID) REFERENCES prospectiveCustomers (prospectiveID)
+);
+
+--Customers
+CREATE TABLE customers(
+    customerID      int NOT NULL,
+    name            varchar(50) NOT NULL,
+    DOB             date NOT NULL,
+    emailAddress    varchar(50) NOT NULL,
+    loyaltyPoints   int,
+    yearsLoyal      int,
+    CONSTRAINT customers_pk PRIMARY KEY (customerID)
+);
+
+CREATE TABLE pets(
+    customerID      int NOT NULL,
+    petID           int NOT NULL,
+    petName         varchar(50) NOT NULL,
+    petDOB          date NOT NULL,
+    petSpecies      varchar(50) NOT NULL,
+    CONSTRAINT pets_pk PRIMARY KEY (customerID, petID),
+    CONSTRAINT pets_fk FOREIGN KEY (customerID) REFERENCES customers(customerID)
+);
+
+CREATE TABLE zipLocations(
+    zipCode         int NOT NULL,
+    city            varchar(50) NOT NULL,
+    state           varchar(50) NOT NULL,
+    CONSTRAINT zipLocations_pk PRIMARY KEY (zipCode)
+);
+
+--Needs to be changed to Addresses
+--Fix this up and figure out the connections
+CREATE TABLE corporateaddresses(
+    corporateID      int NOT NULL,
+    addressType     varchar(50) NOT NULL,
+    address         varchar(50) NOT NULL,
+    zipCode         int NOT NULL,
+    CONSTRAINT corporateAddresses_pk PRIMARY KEY (address, corporateID),
+    CONSTRAINT corporateAddresses_fk1 FOREIGN KEY (zipCode) REFERENCES zipLocations(zipCode),
+    CONSTRAINt corporateAddresses_fk2 FOREIGN KEY (corporateID) REFERENCES corporateCustomers(corporateID)
+    
+);
+
+CREATE TABLE privateaddresses(
+    privateID      int NOT NULL,
+    address   varchar(50) NOT NULL,
+    zipCode         int NOT NULL,
+    CONSTRAINT privateAddresses_pk PRIMARY KEY (address, privateID),
+    CONSTRAINT privateAddresses_fk1 FOREIGN KEY (zipCode) REFERENCES zipLocations(zipCode),
+    CONSTRAINt privateAddresses_fk2 FOREIGN KEY (privateID) REFERENCES privateCustomers(privateID)
+    
+);
+
+CREATE TABLE privateCustomers(
+    privateID       int NOT NULL,
+    CONSTRAINT privateCustomers_pk PRIMARY KEY (privateID),
+    CONSTRAINT privateCustomers_fk1 FOREIGN KEY (privateID) REFERENCES customers(customerID)
+);
+
+CREATE TABLE corporateCustomers(
+    corporateID     int NOT NULL,
+    CONSTRAINT corporateCustomers_pk PRIMARY KEY (corporateID),
+    CONSTRAINT corporateCustomers_fk1 FOREIGN KEY (corporateID) REFERENCES customers(customerID)
+);
+
+CREATE TABLE donuts(
+    corporateID     int NOT NULL,
+    dateEaten       date NOT NULL,
+    timeEaten       varchar(50) NOT NULL,
+    CONSTRAINT donuts_pk PRIMARY KEY (corporateID, dateEaten, timeEaten),
+    CONSTRAINT donuts_fk FOREIGN KEY (corporateID) REFERENCES corporateCustomers(corporateID)
+);
+
+CREATE TABLE referrals(
+    referralID      int NOT NULL,
+    name            varchar(50) NOT NULL,
+    DOB             date NOT NULL,
+    emailAddress    varchar(50) NOT NULL,
+    CONSTRAINT referral_pk PRIMARY KEY (referralID)
+);
+
+CREATE TABLE members(
+    memberID        int NOT NULL,
+    referralID      int NOT NULL,
+    CONSTRAINT members_pk PRIMARY KEY (memberID),
+    CONSTRAINT members_fk1 FOREIGN KEY (memberID) REFERENCES customers(customerID),
+    CONSTRAINT members_fk2 FOREIGN KEY (referralID) REFERENCES referrals(referralID)
+);
+
+CREATE TABLE payments(
+    memberID        int NOT NULL,
+    amount          float NOT NULL,
+    payDate         date NOT NULL,
+    CONSTRAINT payments_pk PRIMARY KEY (memberID, amount, payDate),
+    CONSTRAINT payments_fk FOREIGN KEY (memberID) REFERENCES members(memberID)
+);
+    
+CREATE TABLE prospectiveCustomers(
+    prospectiveID       int NOT NULL,
+    emailCount          int NOT NULL,
+    deadProspectFlag    boolean NOT NULL,
+    CONSTRAINT prospectiveCustomers_pk PRIMARY KEY (prospectiveID),
+    CONSTRAINT prospectiveCustomers_fk FOREIGN KEY (prospectiveID) REFERENCES customers(customerID)
+);
+
+CREATE TABLE premierCustomers(
+    premierID           int NOT NULL,
+    CONSTRAINT premierCustomers_pk PRIMARY KEY (premierID),
+    CONSTRAINT premierCustomers_fk FOREIGN KEY (premierID) REFERENCES members(memberID)
+);
+
+CREATE TABLE annualFees(
+    premierID   int NOT NULL,
+    fee         DECIMAL(20,2) NOT NULL,
+    "year"        int NOT NULL,
+    CONSTRAINT annualFees_pk PRIMARY KEY (premierID, "year"),
+    CONSTRAINT annualFees_fk FOREIGN KEY (premierID) REFERENCES premierCustomers(premierID)
+);
+
+CREATE TABLE steadyCustomers(
+    steadyID            int NOT NULL,
+    recentPayment       int NOT NULL,
+    CONSTRAINT steadyCustomers_pk PRIMARY KEY (steadyID),
+    CONSTRAINT steadyCustomers_fk FOREIGN KEY (steadyID) REFERENCES members(memberID)
+);
